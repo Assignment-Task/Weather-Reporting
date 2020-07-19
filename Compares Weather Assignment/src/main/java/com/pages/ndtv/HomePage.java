@@ -1,19 +1,22 @@
-package com.pages;
+package com.pages.ndtv;
 
 import org.openqa.selenium.WebDriver;
 import org.openqa.selenium.WebElement;
 import org.openqa.selenium.support.FindBy;
 import org.openqa.selenium.support.PageFactory;
 
-public class NdtvHomePage {
+public class HomePage {
 
+    //***********************************************************************************
+    //************************** Home Page Locator **************************************
+    //***********************************************************************************
     @FindBy(id = "h_sub_menu")
     private WebElement subMenu;
 
     @FindBy(xpath = "//div[@class='topnav_cont']/descendant::a[text()='WEATHER']")
     private WebElement weatherMenu;
 
-    public NdtvHomePage(WebDriver driver) {
+    public HomePage(WebDriver driver) {
         PageFactory.initElements(driver, this);
     }
 
