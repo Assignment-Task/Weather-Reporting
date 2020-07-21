@@ -1,0 +1,12 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE suite SYSTEM "https://testng.org/testng-1.0.dtd">
+<suite name="Suite">
+    <test thread-count="1" name="Test">
+        <parameter name="temp" value="3"/>
+        <parameter name="humidity" value="20"/>
+        <parameter name="city" value="New Delhi"/>
+        <classes>
+            <class name="com.TC_001"/>
+        </classes>
+    </test>
+</suite>
