@@ -1,6 +1,5 @@
 package com;
 
-import io.restassured.RestAssured;
 import io.restassured.http.ContentType;
 import io.restassured.http.Header;
 import io.restassured.http.Headers;
@@ -11,6 +10,7 @@ import org.apache.log4j.Logger;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
+import java.util.Map;
 
 import static io.restassured.RestAssured.given;
 
@@ -24,7 +24,7 @@ public class ApiUtil {
     // ########################################################################################################
     // ######################################## CALLING API ###################################################
     // ########################################################################################################
-    public Response restcall(String endpoints, Method method, List<Header> headerlist, Object requestBody) {
+    public Response restcall(String endpoints, Method method, List<Header> headerlist, Object param) {
 
         if (headerlist == null) {
             headerlist = new ArrayList<>();
@@ -37,23 +37,22 @@ public class ApiUtil {
 
         switch (method) {
             case GET:
-                RestAssured.useRelaxedHTTPSValidation();
                 response = given()
-                        .urlEncodingEnabled(false)
                         .headers(headers)
+                        .params((Map<String, ?>) param)
                         .get(endpoints);
                 break;
             case POST:
                 response = given()
                         .contentType(ContentType.JSON)
                         .headers(headers)
-                        .body(requestBody).post(endpoints);
+                        .body(param).post(endpoints);
                 break;
             case PUT:
                 response = given()
                         .contentType(ContentType.JSON)
                         .headers(headers)
-                        .body(requestBody).when().put(endpoints);
+                        .body(param).when().put(endpoints);
                 break;
             case PATCH:
                 response = given()
@@ -68,7 +67,7 @@ public class ApiUtil {
         }
         if (Logger.getRootLogger().getLevel().toString().equalsIgnoreCase("debug")) {
             //will write at console in debug mode
-            printToConsole(endpoints, headers, method, requestBody);
+            printToConsole(endpoints, headers, method, param);
         }
         return response;
     }
@@ -79,9 +78,9 @@ public class ApiUtil {
      * @param endpoints
      * @param headers
      * @param method
-     * @param requestBody
+     * @param param
      */
-    public void printToConsole(String endpoints, Headers headers, Method method, Object requestBody) {
+    public void printToConsole(String endpoints, Headers headers, Method method, Object param) {
 
         Logging.logDebug(this.getClass(), ANSI_GREEN + "Calling : " + ANSI_RESET + endpoints);
         Logging.logDebug(this.getClass(), ANSI_GREEN + "Method : " + ANSI_RESET + method);
@@ -90,7 +89,7 @@ public class ApiUtil {
         Logging.logDebug(this.getClass(), ANSI_GREEN + "Request body : " + ANSI_RESET);
 
         if (method.equals(Method.POST) || method.equals(Method.PUT)) {
-            String str[] = requestBody.toString().split(",");
+            String str[] = param.toString().split(",");
             List<String> al = new ArrayList<String>();
             al = Arrays.asList(str);
             System.out.println();
@@ -98,7 +97,7 @@ public class ApiUtil {
                 System.out.println(s);
             }
         } else {
-            System.out.println("No Body");
+            Logging.logDebug(this.getClass(),"No Body");
         }
         Logging.logDebug(this.getClass(), ANSI_GREEN + "Response Code: " + ANSI_RESET + response.statusCode());
         Logging.logDebug(this.getClass(), ANSI_GREEN + "Response Body: " + ANSI_RESET);
