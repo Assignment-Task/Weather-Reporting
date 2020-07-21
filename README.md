@@ -11,6 +11,7 @@ This maven module contain all the basic utilities eg. Logger, Api Util, WebDrive
 ### Compares Weather Assignment
 This maven module contain data related to weather assignment eg. locator, test script, api etc
 
+### Project Structure
 ![Alt text](Docs/ProjectDetail.png?raw=true "Title")
 
 
